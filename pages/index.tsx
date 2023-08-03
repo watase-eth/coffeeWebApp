@@ -3,15 +3,24 @@ import type { NextPage } from "next";
 import { Box, Card, CardBody, Container, Flex, Heading, Input, SimpleGrid, Skeleton, Stack, Text } from "@chakra-ui/react";
 import { ethers } from "ethers";
 import { useState } from "react";
+import { CONTRACT_ADDRESS } from "../const/addresses";
 
 const Home: NextPage = () => {
   const address = useAddress();
-  const contractAddress = "0x7e9128EFDE9B66Ed600238cE8Fa640A1D449bfD7";
 
-  const {contract} = useContract(contractAddress);
+  const {
+    contract
+  } = useContract(CONTRACT_ADDRESS);
 
-  const { data: totalCoffees, isLoading: loadingTotalCoffee } = useContractRead(contract, "getTotalCoffee");
-  const { data: recentCoffee, isLoading: loadingRecentCoffee } = useContractRead(contract, "getAllCoffee");
+  const { 
+    data: totalCoffees, 
+    isLoading: loadingTotalCoffee 
+  } = useContractRead(contract, "getTotalCoffee");
+
+  const { 
+    data: recentCoffee, 
+    isLoading: loadingRecentCoffee 
+  } = useContractRead(contract, "getAllCoffee");
 
   const [message, setMessage] = useState<string>("");
   const [name, setName] = useState<string>("");
@@ -64,7 +73,7 @@ const Home: NextPage = () => {
               <Box mt={"20px"}>
                 {address ? (
                   <Web3Button
-                    contractAddress={contractAddress}
+                    contractAddress={CONTRACT_ADDRESS}
                     action={(contract) => {
                       contract.call("buyCoffee", [message, name], {value: ethers.utils.parseEther("0.01")})
                     }}
